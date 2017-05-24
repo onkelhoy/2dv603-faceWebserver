@@ -123,7 +123,6 @@ function create(){
           type: 'post',
           url: adminURL, // comes later
           crossDomain: true,
-          dataType: 'jsonp',
           data: {
             personalNumber: pn,
             file: data.substr(data.indexOf(",") + 1, data.length)
