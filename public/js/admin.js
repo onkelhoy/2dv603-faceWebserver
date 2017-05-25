@@ -2,8 +2,8 @@
 let clientLength = null; //init value
 let adminURL = 'https://lnu-face.herokuapp.com/admin'; //future admin Face server
 
-
 $(document).ready(function(){
+  $('.loaders').hide();
   initList(0);
 
   $('.column').hide();
@@ -16,6 +16,7 @@ $(document).ready(function(){
 
     $(this).addClass('active');
     $('.'+$(this).attr('show')).show();
+    $('.loaders').hide();
   });
 
   $('input[type=file]').change(function(){
@@ -30,8 +31,6 @@ $(document).ready(function(){
     }
   });
 });
-
-
 function removeBtn(){
   $('.ui.basic.modal.remove').modal('show');
   MSG('remove');
@@ -59,46 +58,34 @@ function getImage(image, callback){
 
 function initList(index){
   if(clientLength == null || index >= 0 && index < clientLength){
-    // $.ajax({
-    //   type: 'get',
-    //   url: adminURL, // comes later
-    //   success: function(clientCount){
-        var tfoot = $('tfoot > tr > th > div');
-        var before = Number(tfoot.attr('index')) || 0;
 
-        tfoot.attr('index', index);
-        tfoot.empty();
+    var tfoot = $('tfoot > tr > th > div');
+    var before = Number(tfoot.attr('index')) || 0;
 
-        clientLength = 8; //clientCount
+    tfoot.attr('index', index);
+    tfoot.empty();
 
-        var l = clientLength-index;
-        if(before > index) {
-          index--;
-          if (index < 0) index = 0;
-        }
-        else if (l > 4) l = 4;
-        else if(clientLength > 4) {
-           index = clientLength-4;
-        }
+    clientLength = 8; //clientCount
+    var l = 4;
 
-        var prev = $('<a>').addClass('icon item').append($('<i>').addClass('left chevron icon')).attr('index', index-1 >= 0 ? index-1 : 0),
-            next = $('<a>').addClass('icon item').append($('<i>').addClass('right chevron icon')).attr('index', index+1 < clientLength ? index+1 : clientLength);
+    var prev = $('<a>').addClass('icon item')
+        .append($('<i>').addClass('left chevron icon'))
+        .attr('index', index-1 >= 0 ? index-1 : 0),
 
-        tfoot.append(prev);
-        for(i=0; i<l; i++){
-          tfoot.append($('<a>').addClass('item').attr('index', index+i).text(index+i));
-        }
-        tfoot.append(next);
+        next = $('<a>').addClass('icon item')
+        .append($('<i>').addClass('right chevron icon'))
+        .attr('index', index+1 < clientLength ? index+1 : clientLength);
 
-        $('div.menu > a.item').click(function(){
-          initList(Number($(this).attr('index')));
-        });
-    //   },
-    //   error: function(xhr){
-    //     MSG('list', 'Could not initialize table');
-    //     console.error(xhr);
-    //   }
-    // });
+    tfoot.append(prev);
+    for(i=0; i<l; i++){
+      tfoot.append($('<a>').addClass('item').attr('index', index+i).text(index+i));
+    }
+    tfoot.append(next);
+
+    $('div.menu > a.item').click(function(){
+      initList(Number($(this).attr('index')));
+    });
+    list(index);
   }
   else MSG('list', 'Already reached max or min');
 }
@@ -113,12 +100,19 @@ function create(){
   else if (typeof image == 'undefined' || image.length == 0) MSG('create', 'You must include a picture');
   else {
     // get content from image, then send
+    $('.create.loaders').show();
+    $('#crt_file_load').show();
+    $('#crt_load').hide();
     getImage(image[0], function(err, data){
       if(err) {
+        $('.create.loaders').hide();
         console.error(err);
         MSG('create', 'There was an error reading your image');
       }
       else {
+        $('#crt_file_load').hide();
+        $('#crt_load').show();
+
         $.ajax({
           type: 'post',
           url: adminURL, // comes later
@@ -130,10 +124,12 @@ function create(){
 
           success: function(response){
             // do something
-            console.log('yes');
+            $('.create.loaders').hide();
+            console.log(response);
             MSG('create', 'Client was successfully created', 'success');
           },
           error: function(xhr){
+            $('.create.loaders').hide();
             console.error(xhr);
             MSG('create', xhr.responseText);
           }
@@ -144,31 +140,35 @@ function create(){
 }
 // READ function
 function list(index){
+  $('.list.loaders').show();
   $.ajax({
     type: 'get',
     url: adminURL, // comes later
     data: {
-      index: index*8,
-      limit: 8
+      page: index,
+      size: 8
     },
 
     success: function(clients){
+      $('.list.loaders').hide();
       $('tbody').empty(); // drain the table
+      console.log(clients);
 
       // add the values
-      for(var i = 0; i < clients.length; i++){
+      for(var i = 0; i < clients.content.length; i++){
         var tr = $('<tr>');
         // for the sake of design
-        if(i == 0) tr.append($('<th>').append($('<div>').addClass('ui ribbon label').text(clients[i].id)));
-        else tr.append($('<th>').text(clients[i].id));
+        if(i == 0) tr.append($('<th>').append($('<div>').addClass('ui ribbon label').text(clients.content[i].id)));
+        else tr.append($('<th>').text(clients.content[i].id));
 
-        tr.append($('<th>').text(clients[i].pn));
-        tr.append($('<th>').text(clients[i].link));
+        tr.append($('<th>').text(clients.content[i].personalNumber));
+        tr.append($('<th>').text(clients.content[i].photoLink));
 
         $('tbody').append(tr);
       }
     },
     error: function(xhr){
+      $('.list.loaders').hide();
       MSG('list', xhr.responseText);
       console.error(xhr);
     }
@@ -185,25 +185,36 @@ function update(){
   else if (typeof image == 'undefined' || image.length == 0) MSG('update', 'You must include a picture');
   else {
     // get content from image, then send
+    $('#upd_load').hide();
+    $('#upd_file_load').show();
+    $('.update.loaders').show();
     getImage(image[0], function(err, data){
       if(err) {
+        $('.update.loaders').hide();
         console.error(err);
-        MSG('create', 'There was an error reading your image');
+        MSG('update', 'There was an error reading your image');
       }
       else {
+        $('#upd_file_load').hide();
+        $('#upd_load').show();
+
         $.ajax({
           type: 'put',
           url: adminURL, // comes later,
           data: {
             id: id,
-            pn: pn,
-            image: data
+            personalNumber: pn,
+            file: data.substr(data.indexOf(",") + 1, data.length)
           },
 
           success: function(response){
             // do something
+            $('.update.loaders').hide();
+            console.log(response);
+            MSG('update', 'Client was successfully updated', 'success');
           },
           error: function(xhr){
+            $('.update.loaders').hide();
             console.error(xhr);
             MSG('update', xhr.responseText);
           }
@@ -217,14 +228,18 @@ function remove(){
   var id = $('#remove_id').val();
   if(id == '') MSG('remove', 'ID must have a value');
   else {
+    $('.del.loaders').show();
     $.ajax({
       type: 'delete',
-      url: adminURL, // update later
-      data: {id: id},
+      url: adminURL+'/'+id, // update later
       success: function(response){
         // do something
+        $('.del.loaders').hide();
+        console.log(response);
+        MSG('remove', 'Client was successfully removed', 'success');
       },
       error: function(xhr){
+        $('.del.loaders').hide();
         console.error(xhr);
         MSG('remove', xhr.responseText);
       }

@@ -1,7 +1,7 @@
 function login(){
   var usn = document.getElementById('company').value,
       psw = document.getElementById('password').value,
-      url = 'Future-Face-Server-URL';
+      url = 'https://lnu-face.herokuapp.com/login';
 
   var http = new XMLHttpRequest();
   http.open('POST', url, true);

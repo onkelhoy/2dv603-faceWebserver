@@ -28,3 +28,21 @@ body > div > div {
 td {
   text-overflow: ellipsis;
 }
+
+th {
+  padding: 14px;
+  color: #777;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:last-child > th {
+  border-bottom: none;
+}
+
+/*.dimmer, .loader {
+  position: absolute !important;
+
+}
+.dimmer {
+  height: 500px !important;
+}*/
