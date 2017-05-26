@@ -1,8 +1,30 @@
 // global vairalbles
 var c, ctx, v, w, h, ratio, u, picTaken = false;
 
-// do stuff when loaded
-window.onload = function(){
+// set credentials
+$.ajax({
+  type: 'get',
+  url: 'credentials',
+  success: function(credentials){
+    $.ajaxSetup({
+      url: 'https://lnu-face.herokuapp.com/user',
+      crossDomain: true,
+      data: credentials
+    });
+
+    // ok to run
+    RUN();
+  },
+  error: function(xhr){
+    // not logged in
+    window.location.href = '/login';
+  }
+});
+
+// initial function
+function RUN(){
+  // do stuff when loaded
+  window.onload = function(){
   ratio = 6/4;
   c = document.querySelector('canvas');
   v = document.querySelector('video');
@@ -27,6 +49,9 @@ window.onload = function(){
 
   $('.circular.ui.icon.button').click(snap);
 }
+  window.onresize = size;
+}
+
 function camError(e){
   console.log(e);
   $('.nocam').show();
@@ -36,8 +61,6 @@ function camError(e){
 
   showError('Your browser cannot access webcam', 'Please choose file instead.');
 }
-
-window.onresize = size;
 function size(){
   w = window.innerWidth*.8;
   if(w > 600) w = 600;
@@ -163,9 +186,7 @@ function upload(){
   }
 }
 function sendData(file){
-  var url = '#some-cool-website'; // add in the real url later
   $.ajax({
-    url: url,
     type: 'post',
     data: {
       image: file

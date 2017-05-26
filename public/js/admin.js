@@ -1,8 +1,26 @@
 // global vairable
 let clientLength = null; //init value
-let adminURL = 'https://lnu-face.herokuapp.com/admin'; //future admin Face server
 
-$(document).ready(function(){
+$.ajax({
+  type: 'get',
+  url: 'credentials',
+  success: function(credentials){
+    $.ajaxSetup({
+      url: 'https://lnu-face.herokuapp.com/admin',
+      crossDomain: true,
+      data: credentials
+    });
+
+    RUN();
+  },
+  error: function(xhr){
+    // not logged in
+    window.location.href = '/login';
+  }
+});
+
+var RUN = function(){
+  $(document).ready(function(){
   $('.loaders').hide();
   initList(0);
 
@@ -31,6 +49,8 @@ $(document).ready(function(){
     }
   });
 });
+}
+
 function removeBtn(){
   $('.ui.basic.modal.remove').modal('show');
   MSG('remove');
@@ -115,8 +135,6 @@ function create(){
 
         $.ajax({
           type: 'post',
-          url: adminURL, // comes later
-          crossDomain: true,
           data: {
             personalNumber: pn,
             file: data.substr(data.indexOf(",") + 1, data.length)
@@ -143,7 +161,6 @@ function list(index){
   $('.list.loaders').show();
   $.ajax({
     type: 'get',
-    url: adminURL, // comes later
     data: {
       page: index,
       size: 8
@@ -200,7 +217,6 @@ function update(){
 
         $.ajax({
           type: 'put',
-          url: adminURL, // comes later,
           data: {
             id: id,
             personalNumber: pn,
@@ -231,7 +247,7 @@ function remove(){
     $('.del.loaders').show();
     $.ajax({
       type: 'delete',
-      url: adminURL+'/'+id, // update later
+      url: 'https://lnu-face.herokuapp.com/admin/'+id, // update later
       success: function(response){
         // do something
         $('.del.loaders').hide();

