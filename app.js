@@ -37,7 +37,7 @@
       title: 'Face - admin'
     });
   }).get('/user', function(req, res){
-    res.status(200).render('index', 
+    res.status(200).render('index', {
       type: 'user',
       title: 'Face - user'
     });
