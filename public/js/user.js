@@ -9,9 +9,8 @@ $.ajax({
     $.ajaxSetup({
       url: 'https://lnu-face.herokuapp.com/user',
       crossDomain: true,
-      data: {
-        company: credentials.company,
-        password: credentials.password
+      beforeSend: function(xhr){
+        xhr.setRequestHeader ("Authorization", "Basic " + btoa(credentials.company + ":" + credentials.password));
       }
     });
 
