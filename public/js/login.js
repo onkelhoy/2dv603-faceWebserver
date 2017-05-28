@@ -41,7 +41,7 @@ function login(){
 
     error: function(xhr){
       console.log(xhr);
-      if(http.status == 404) document.querySelector('div.ui.error.message').innerHTML = 'Username or Password is incorrect';
+      if(xhr.status == 404) document.querySelector('div.ui.error.message').innerHTML = 'Username or Password is incorrect';
       else document.querySelector('div.ui.error.message').innerHTML = 'unknown error, check console';
 
       // and display it as well
