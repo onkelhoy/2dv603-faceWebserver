@@ -46,6 +46,10 @@ function login(){
 
       // and display it as well
       document.querySelector('div.ui.error.message').style.display = 'block';
+    },
+
+    complete: function(){
+      document.querySelector('div.submit.button').innerHTML = 'Login';
     }
   });
 }
