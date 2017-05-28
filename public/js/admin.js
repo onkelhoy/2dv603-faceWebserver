@@ -8,7 +8,10 @@ $.ajax({
     $.ajaxSetup({
       url: 'https://lnu-face.herokuapp.com/admin',
       crossDomain: true,
-      data: credentials
+      data: {
+        company: credentials.company,
+        password: credentials.password
+      }
     });
 
     RUN();
