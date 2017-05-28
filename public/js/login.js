@@ -25,6 +25,7 @@ function login(){
   $.ajax({
     method: 'post',
     url: url,
+    crossDomain: true,
     data: {
       company: usn,
       password: psw
