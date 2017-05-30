@@ -11,6 +11,7 @@ $.ajax({
     $.ajaxSetup({
       url: 'https://lnu-face.herokuapp.com/admin',
       crossDomain: true,
+      dataType: 'jsonp',
       beforeSend: function(xhr){
         xhr.setRequestHeader ("Authorization", "Basic " + btoa(credentials.company + ":" + credentials.password));
         bajs = xhr;
