@@ -41,6 +41,8 @@ var RUN = function(){
     $('.loaders').hide();
   });
 
+  // $()
+
   $('header > a.item:first-child').click(function(){
     initList(0);
   });
