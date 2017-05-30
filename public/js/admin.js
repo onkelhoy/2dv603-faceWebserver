@@ -1,28 +1,24 @@
 // global vairable
 let clientLength = null; //init value
 
-var bajs = null;
-
-
 $.ajax({
   type: 'get',
   url: 'credentials',
   success: function(credentials){
     $.ajaxSetup({
-      url: 'https://lnu-face.herokuapp.com/admin',
+      url: 'https://lnu-face.herokuapp.com/admin/',
       crossDomain: true,
-      dataType: 'jsonp',
       beforeSend: function(xhr){
         xhr.setRequestHeader ("Authorization", "Basic " + btoa(credentials.company + ":" + credentials.password));
-        bajs = xhr;
-        console.log(xhr);
       }
     });
 
+    console.log('no');
     RUN();
   },
   error: function(xhr){
     // not logged in
+    console.log('hah');
     window.location.href = '/login';
   }
 });
@@ -33,7 +29,9 @@ var RUN = function(){
   initList(0);
 
   $('.column').hide();
-  $('.column.list').show();
+  $('.column.list').show().click(function(){
+    initList(0);
+  });
 
 
   $('header > a.item').click(function(){
