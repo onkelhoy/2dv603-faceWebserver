@@ -33,12 +33,19 @@ function login(){
 
     success: function(data, statusText, xhr){
       console.log(data, statusText, xhr);
-      if (xhr.status == 200) { // oh a admin logged in
-        // location.href = '/admin';
+      if (xhr.responseText == "admin") { // oh a admin logged in
+        location.href = '/admin';
         settings.data.admin = true;
+        $.ajax(settings);
       }
-      // else if (xhr.status == 203) location.href = '/user';
-      $.ajax(settings);
+      else if (xhr.responseText == "user") {
+        location.href = '/user';
+        $.ajax(settings);
+      }
+      else {
+        document.querySelector('div.ui.error.message').innerHTML = 'Username or Password is incorrect';
+        document.querySelector('div.ui.error.message').style.display = 'block';
+      }
     },
 
     error: function(xhr){
