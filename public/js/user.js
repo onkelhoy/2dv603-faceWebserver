@@ -33,6 +33,18 @@ function RUN(){
   u = document.querySelector('div.upload');
   ctx = c.getContext('2d');
 
+  $('input[type=file]').change(function(){
+    if(this.files.length == 0) this.parentNode.children[1].children[1].innerHTML = 'Open Image';
+    else {
+      var name = this.files[0].name;
+      if(name.length > 15){
+        name = '..'+name.slice(name.length-13);
+      }
+
+      this.parentNode.children[1].children[1].innerHTML = name;
+    }
+  });
+
   v.addEventListener( "loadedmetadata", function (e) {
 
     ratio = this.videoWidth/this.videoHeight;
@@ -172,13 +184,16 @@ function showError(head, text){
 }
 function upload(){
   var file = $('#photo')[0].files;
-  if(file.length == 1) getimage(file[0],
+  if(file.length == 1) {
+    console.log('picker');
+    getimage(file[0],
         function(err, img){
           if(err) showError('Loading image error', 'An error occured while loading picture');
           else {
             sendData(img.substr(img.indexOf(",") + 1, img.length));
           }
       });
+  }
   else if (picTaken) {
     var img = c.toDataURL();
     sendData(img.substr(img.indexOf(",") + 1, img.length));
