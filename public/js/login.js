@@ -34,10 +34,10 @@ function login(){
     success: function(data, statusText, xhr){
       console.log(data, statusText, xhr);
       if (xhr.status == 200) { // oh a admin logged in
-        location.href = '/admin';
+        // location.href = '/admin';
         settings.data.admin = true;
       }
-      else if (xhr.status == 203) location.href = '/user';
+      // else if (xhr.status == 203) location.href = '/user';
       $.ajax(settings);
     },
 
