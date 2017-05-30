@@ -1,6 +1,9 @@
 // global vairable
 let clientLength = null; //init value
 
+var bajs = null;
+
+
 $.ajax({
   type: 'get',
   url: 'credentials',
@@ -10,6 +13,7 @@ $.ajax({
       crossDomain: true,
       beforeSend: function(xhr){
         xhr.setRequestHeader ("Authorization", "Basic " + btoa(credentials.company + ":" + credentials.password));
+        bajs = xhr;
         console.log(xhr);
       }
     });
