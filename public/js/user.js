@@ -10,7 +10,7 @@ $.ajax({
       url: 'https://lnu-face.herokuapp.com/api/v1/user/',
       crossDomain: true,
       beforeSend: function(xhr){
-        xhr.setRequestHeader ('Content-Type', 'application/json');
+        // xhr.setRequestHeader ('Content-Type', 'application/json');
         xhr.setRequestHeader ("Authorization", "Basic " + btoa(credentials.company + ":" + credentials.password));
       }
     });
