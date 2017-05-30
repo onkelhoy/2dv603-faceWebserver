@@ -10,6 +10,7 @@ $.ajax({
       crossDomain: true,
       beforeSend: function(xhr){
         xhr.setRequestHeader ("Authorization", "Basic " + btoa(credentials.company + ":" + credentials.password));
+        console.log(xhr);
       }
     });
 
