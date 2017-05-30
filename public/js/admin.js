@@ -29,9 +29,7 @@ var RUN = function(){
   initList(0);
 
   $('.column').hide();
-  $('.column.list').show().click(function(){
-    initList(0);
-  });
+  $('.column.list').show();
 
 
   $('header > a.item').click(function(){
@@ -41,6 +39,10 @@ var RUN = function(){
     $(this).addClass('active');
     $('.'+$(this).attr('show')).show();
     $('.loaders').hide();
+  });
+
+  $('header > a.item:first-child').click(function(){
+    initList(0);
   });
 
   $('input[type=file]').change(function(){
