@@ -10,6 +10,7 @@ $.ajax({
       url: 'https://lnu-face.herokuapp.com/api/v1/user/',
       crossDomain: true,
       beforeSend: function(xhr){
+        xhr.setRequestHeader ('Content-Type', 'application/json');
         xhr.setRequestHeader ("Authorization", "Basic " + btoa(credentials.company + ":" + credentials.password));
       }
     });
@@ -222,7 +223,7 @@ function sendData(file){
     },
     error: function(xhr){
       console.log(xhr);
-      if(xhr.responseText.length > 100) showError('Error', 'check console for more info');
+      if(!xhr.responseText || xhr.responseText.length > 100) showError('Error', 'check console for more info');
       else showError('Error', xhr.responseText);
     },
     complete: function(){
