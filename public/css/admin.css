@@ -2,6 +2,38 @@ body > .grid {
   height: 100%;
 }
 
+tbody > tr > th+th+th {
+  position: relative;
+  cursor: pointer;
+}
+tbody > tr > th+th+th:hover {
+  text-decoration: underline;
+  color: #00013a;
+}
+tbody > tr > th+th+th:hover > div {
+  display: block;
+}
+
+.popupDisplay {
+  background-color: white;
+  z-index: 10;
+  display: none;
+  position: absolute;
+  left: 85%;
+  top: 0;
+
+  width: 20%;
+  min-width: 150px;
+  max-width: 250px;
+
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+.popupDisplay > img {
+  width: 100%;
+}
+
 body > div > div {
   display: none;
 }

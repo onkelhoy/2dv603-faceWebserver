@@ -13,12 +13,10 @@ $.ajax({
       }
     });
 
-    console.log('no');
     RUN();
   },
   error: function(xhr){
     // not logged in
-    console.log('hah');
     window.location.href = '/login';
   }
 });
@@ -41,7 +39,6 @@ var RUN = function(){
     $('.loaders').hide();
   });
 
-  // $()
 
   $('header > a.item:first-child').click(function(){
     initList(0);
@@ -189,7 +186,12 @@ function list(index){
         else tr.append($('<th>').text(clients.content[i].id));
 
         tr.append($('<th>').text(clients.content[i].personalNumber));
-        tr.append($('<th>').text(clients.content[i].photoLink));
+        tr.append(
+          $('<th>').text(clients.content[i].photoLink).append(
+              $('<div>').addClass('popupDisplay').append(
+                  $('<img>').attr('src', clients.content[i].photoLink).attr('alt', 'image-link')
+          ))
+        );
 
         $('tbody').append(tr);
       }
