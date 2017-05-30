@@ -1,7 +1,7 @@
 function login(){
   var usn = document.getElementById('company').value,
       psw = document.getElementById('password').value,
-      url = 'https://lnu-face.herokuapp.com/login';
+      url = 'https://lnu-face.herokuapp.com/api/v1/login';
 
   // store the credentials to webserver
 
