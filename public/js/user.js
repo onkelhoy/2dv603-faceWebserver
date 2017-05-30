@@ -223,8 +223,8 @@ function sendData(file){
     },
     error: function(xhr){
       console.log(xhr);
-      if(!xhr.responseText || xhr.responseText.length > 100) showError('Error', 'check console for more info');
-      else showError('Error', xhr.responseText);
+      if(!xhr.error || xhr.error.length > 100) showError('Error', 'check console for more info');
+      else showError('Error', xhr.error);
     },
     complete: function(){
       // remove the loader
