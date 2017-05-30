@@ -192,7 +192,7 @@ function sendData(file){
   $.ajax({
     type: 'post',
     data: {
-      image: file
+      file: file
     },
     success: function(data, textstatus, xhr){
       if(xhr.status == 200) {
