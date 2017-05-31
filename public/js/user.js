@@ -34,8 +34,33 @@ function RUN(){
   ctx = c.getContext('2d');
 
   $('input[type=file]').change(function(){
-    if(this.files.length == 0) this.parentNode.children[1].children[1].innerHTML = 'Open Image';
+    if(this.files.length == 0) {
+      if(camErrorStatus){
+        c.style.display = 'none';
+      }
+      else {
+        v.style.display = 'initial';
+        drawSquare();
+      }
+      this.parentNode.children[1].children[1].innerHTML = 'Open Image';
+    }
     else {
+      // add to canvas
+      var imageFile = URL.createObjectURL(this.files[0]),
+          image = new Image();
+
+      image.onload = function(){
+        if(camErrorStatus) {
+          c.style.display = 'initial'; // if no html5 support.. (should be image tag instead but..)
+        }
+        else {
+          v.style.display = 'none';
+        }
+        drawSquare();
+        ctx.drawImage(image, w/2-image.width/2, h/2-image.height/2);
+      }
+      image.src = imageFile;
+
       var name = this.files[0].name;
       if(name.length > 15){
         name = '..'+name.slice(name.length-13);
@@ -66,10 +91,12 @@ function RUN(){
   window.onresize = size;
 }
 
+let camErrorStatus = false;
 function camError(e){
+  camErrorStatus = true;
   console.log(e);
   $('.nocam').show();
-  c.style.display = v.style.display = 'none';
+  v.style.display = 'none'; //c.style.display =
   $('.circular.ui.icon.button').hide();
   u.style['margin-top'] = '100px';
 
